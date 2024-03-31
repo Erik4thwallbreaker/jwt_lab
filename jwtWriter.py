@@ -32,13 +32,20 @@ def write_jwt():
 
 def read_jwt(token):
 	try:
-		uToken_list = token.split('.')													#List with Encoded strings
-		token_list = [ base64.urlsafe_b64decode(jwt_part.encode()) for jwt_part in uToken_list] #Binary list
-		header = token_list[0].decode()
-		payload = token_list[1].decode()
-		signature = token_list[2]
+		uToken_list = token.split('.')																#List with encoded strings
+		token_list = [ base64.urlsafe_b64decode(jwt_part.encode()) for jwt_part in uToken_list]		#Binary list
+		header = token_list[0].decode()																#String
+		payload = token_list[1].decode()															#String
+		givenSignature = token_list[2]																#Binary
+		print('Given signature:')
+		print(givenSignature)
 
-		authentic_signature = True
+		message = uToken_list[0] + '.' + uToken_list[1]
+		signature = hmac.new( CONST_KEY, message.encode(), hashlib.sha256)							#HMAC Object
+		ownSignature = signature.digest()															#Bytes#
+		print('Own Signatreu: ')
+		print(ownSignature)
+		authentic_signature = ( givenSignature == ownSignature )
 		if authentic_signature:
 			print("Signature verified")
 			print("Payload: " + payload)
