@@ -24,7 +24,8 @@ def write_jwt():
 
 	#Signature goes here
 	message = uHeader.decode() + "." + uPayload.decode()							#String
-	signature = hmac.new( CONST_KEY, message.encode(), hashlib.sha256)	#Byte object
+	signature = hmac.new( CONST_KEY, message.encode(), hashlib.sha256)				#Bytes object
+	uSignature = base64.urlsafe_b64encode(signature.digest())						#Encoded bytes object
 	#All three parts to be encode to URL
-	print ( uHeader.decode() + "." + uPayload.decode() + "." + signature.hexdigest() )
-	return( uHeader.decode() + '.' + uPayload.decode() + '.' + signature.hexdigest() )
+	print ( uHeader.decode() + "." + uPayload.decode() + "." + uSignature.decode() )
+	return( uHeader.decode() + '.' + uPayload.decode() + '.' + uSignature.decode() )
