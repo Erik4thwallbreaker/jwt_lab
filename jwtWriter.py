@@ -1,4 +1,5 @@
 import json
+import time
 import hmac
 import hashlib
 import base64
@@ -18,7 +19,7 @@ def write_jwt():
 	payload = json.dumps({																				#String
 		"sub": "1234567890",
 		"name": "John Doe",
-		"iat": 1516239022
+		"iat": time.time()
 	})
 	uPayload = base64.urlsafe_b64encode(payload.encode())												#Encoded bytes
 
