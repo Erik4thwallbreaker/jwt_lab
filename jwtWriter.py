@@ -32,10 +32,18 @@ def write_jwt():
 def read_jwt(token):
 	try:
 		uToken_list = token.split('.')													#List with Encoded strings
+		print('uToken_list')
+		print(uToken_list)
 		token_list = [ base64.urlsafe_b64decode(jwt_part.encode()) for jwt_part in uToken] #Binary list
+		print('Token_list')
+		print(token_list)
 		header = token_list[0].decode()
+		print('Header, Payload, Signature')
+		print(header)
 		payload = token_list[1].decode()
+		print(payload)
 		signature = token_list[2]
+		print(signature)
 
 		authentic_signature = TRUE
 		if authentic_signature:
@@ -47,3 +55,5 @@ def read_jwt(token):
 	except:
 		print("Invalid token")
 	
+token = write_jwt()
+read_jwt(token)
