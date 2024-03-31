@@ -37,23 +37,26 @@ def read_jwt(token):
 		header = token_list[0].decode()																#String
 		payload = token_list[1].decode()															#String
 		givenSignature = token_list[2]																#Binary
-		print('Given signature:')
-		print(givenSignature)
+
+		givenAlg = json.loads(header)["alg"]
+		givenTyp = json.loads(header)["typ"]
+		if givenTyp != "JWT":
+			return("Unnsported Token")
+		if givenAlg != "HS256":
+			return(givenAlg + "Is not supported")
 
 		message = uToken_list[0] + '.' + uToken_list[1]
 		signature = hmac.new( CONST_KEY, message.encode(), hashlib.sha256)							#HMAC Object
 		ownSignature = signature.digest()															#Bytes#
-		print('Own Signatreu: ')
-		print(ownSignature)
 		authentic_signature = ( givenSignature == ownSignature )
 		if authentic_signature:
-			print("Signature verified")
-			print("Payload: " + payload)
+			return "Signature verified \nPayload: " + payload
 		else:
-			print("Invalid signature")
+			return "Invalid signature"
 
 	except:
-		print("Invalid token")
+			return "Invalid token"
 	
 token = write_jwt()
-read_jwt(token)
+reply = read_jwt(token)
+print(reply)
