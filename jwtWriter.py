@@ -28,3 +28,22 @@ def write_jwt():
 	#All three parts to be encode to URL
 	print ( uHeader.decode() + "." + uPayload.decode() + "." + signature.hexdigest() )
 	return( uHeader.decode() + '.' + uPayload.decode() + '.' + signature.hexdigest() )
+
+def read_jwt(token):
+	try:
+		uToken_list = token.split('.')													#List with Encoded strings
+		token_list = [ base64.urlsafe_b64decode(jwt_part.encode()) for jwt_part in uToken] #Binary list
+		header = token_list[0].decode()
+		payload = token_list[1].decode()
+		signature = token_list[2]
+
+		authentic_signature = TRUE
+		if authentic_signature:
+			print("Signature verified")
+			print("Payload: " + payload)
+		else:
+			print("Invalid signature")
+
+	except:
+		print("Invalid token")
+	
