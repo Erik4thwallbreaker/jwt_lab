@@ -46,7 +46,7 @@ def read_jwt(token):
 		signature = token_list[2]
 		print(signature)
 
-		authentic_signature = TRUE
+		authentic_signature = True
 		if authentic_signature:
 			print("Signature verified")
 			print("Payload: " + payload)
